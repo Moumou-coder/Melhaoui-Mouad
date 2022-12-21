@@ -7,7 +7,6 @@
     'category': 'Uncategorized',
     'version': '16.0.0.1',
     'depends': ['base', 'sale_management', 'calendar', 'hr'],
-    'data': [
-    ],
+    'data': ["views/res_groups.xml", "views/res_partner.xml", "views/sale_order.xml"],
     'license': 'LGPL-3',
 }
