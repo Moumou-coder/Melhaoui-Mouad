@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
         order_line = self.env['sale.order.line'].browse(order_line_id)
         #employee = order_line.employee
         #employee = self.env['hr.employee'].browse(employee)
-        employee_id = line.user_id.id
+        employee_id = order_line.user_id.id
         training_date = order_line.training_date
         description = order_line.name
         
