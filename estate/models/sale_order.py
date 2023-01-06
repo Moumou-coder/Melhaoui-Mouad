@@ -25,7 +25,7 @@ class SaleOrder(models.Model):
             'start': training_date,
             'stop': training_date,
             'allday': True,
-            'partner_id': employee_id,
+            'partner_id': partner_id,
         })
         
         return res
