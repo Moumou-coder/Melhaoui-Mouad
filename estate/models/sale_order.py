@@ -17,7 +17,7 @@ class SaleOrder(models.Model):
             'stop': self.training_date,
             'allday': True,
             'partner_id': self.partner_id.id,
-            'employee': self.employee
+            'employee': self.employee.id
         })
         
         return res
