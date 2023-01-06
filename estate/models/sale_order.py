@@ -5,8 +5,8 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
     def action_confirm(self):
-        
-        res = super(SaleOrder, self).action_confirm()
+        res = super().action_confirm()
+
         order_line_id = self.order_line.id
         order_line = self.env['sale.order.line'].browse(order_line_id)
         training_date = order_line.training_date
