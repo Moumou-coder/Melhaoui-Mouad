@@ -12,8 +12,8 @@ class SaleOrder(models.Model):
         for line in self.order_line:
             event = self.env['calendar.event'].create({
                 'name': line.product_id.name,
-                'start': self.confirmation_date,
-                'stop': self.confirmation_date,
+                'start': self.training_date,
+                'stop': self.training_date,
                 'allday': True,
                 'location': self.partner_id.name,
                 'partner_ids': [(4, self.partner_id.id)],
