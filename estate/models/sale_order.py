@@ -4,20 +4,16 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     training_date = fields.Date(string="Training Date")
-    employee_id = fields.Many2one("hr.employee", string="Employee")
-
-
-    
     
     def action_confirm(self):
         
-        res = super().action_confirm()
+        res = super(SaleOrder, self).action_confirm()
 
         order_line_id = self.order_line.id
         order_line = self.env['sale.order.line'].browse(order_line_id)
         training_date = order_line.training_date
         description = order_line.name
-        employee_id = order_line.employee_id
+        employee_id = order_line.employee_id.user_id
 
         #employee = order_line.employee
         #employee = self.env['hr.employee'].browse(employee)
