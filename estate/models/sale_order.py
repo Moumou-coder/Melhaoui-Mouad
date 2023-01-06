@@ -9,6 +9,7 @@ class SaleOrder(models.Model):
         
         res = super().action_confirm()
 
+        order_line_id = self.order_line.id
         order_line = self.env['sale.order.line'].browse(order_line_id)
         training_date = order_line.training_date
         
