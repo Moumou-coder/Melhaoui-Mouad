@@ -15,7 +15,7 @@ class SaleOrder(models.Model):
         order_line_id = self.order_line.id
         order_line = self.env['sale.order.line'].browse(order_line_id)
         employee_id = order_line.employee.id
-        employee = self.env['hr.employee'].browse(employee_id)
+        #employee = self.env['hr.employee'].browse(employee_id)
         training_date = order_line.training_date
         description = order_line.name
         
@@ -24,8 +24,7 @@ class SaleOrder(models.Model):
             'start': training_date,
             'stop': training_date,
             'allday': True,
-            'partner_id':employee.id,
-            #'user_id' : self.partner_id.id
+            'partner_id': employee_id,
         })
         
         return res
