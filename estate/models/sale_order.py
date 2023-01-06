@@ -8,11 +8,11 @@ class SaleOrder(models.Model):
 
         res = super().action_confirm()
         event = self.env['calendar.event'].create({
+            'partner_id': self.partner_id,
             'name': self.name,
-            'start': self.date_order,
-            'stop': self.date_order,
+            'start': self.training_date,
+            'stop': self.training_date,
             'allday': True,
-            'partner_id': self.partner_id.id,
         })
         
         return res
