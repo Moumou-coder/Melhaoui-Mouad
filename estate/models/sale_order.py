@@ -4,6 +4,8 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     training_date = fields.Date(string="Training Date")
+    employee_id = fields.Many2one("hr.employee", string="Employee")
+
 
     
     
@@ -15,6 +17,7 @@ class SaleOrder(models.Model):
         order_line = self.env['sale.order.line'].browse(order_line_id)
         training_date = order_line.training_date
         description = order_line.name
+        employee_id = order_line.employee_id
 
         #employee = order_line.employee
         #employee = self.env['hr.employee'].browse(employee)
@@ -25,7 +28,8 @@ class SaleOrder(models.Model):
             'name': description,
             'start': training_date,
             'stop': training_date,
-            'allday': True
+            'allday': True,
+            'user_id': employee_id
         })
         
         return res
