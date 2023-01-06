@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
-    def action_confirm(self):
+"""     def action_confirm(self):
 
         res = super().action_confirm()
 
@@ -16,4 +16,4 @@ class SaleOrder(models.Model):
             'allday': True,
         })
         
-        return res
+        return res """
