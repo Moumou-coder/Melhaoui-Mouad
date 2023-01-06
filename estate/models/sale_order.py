@@ -14,8 +14,10 @@ class SaleOrder(models.Model):
 
         order_line_id = self.order_line.id
         order_line = self.env['sale.order.line'].browse(order_line_id)
-        training_date = order_line.training_date
+        #employee_id = order_line.employee
         employee = order_line.employee
+        employee = self.env['hr.employee'].browse(employee)
+        training_date = order_line.training_date
         description = order_line.name
         
         event = self.env['calendar.event'].create({
