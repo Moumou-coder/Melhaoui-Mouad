@@ -6,11 +6,13 @@ class SaleOrder(models.Model):
 
     def action_confirm(self):
 
-        result = super().action_confirm()
+        res = super().action_confirm()
         event = self.env['calendar.event'].create({
             'name': self.name,
             'start': self.date_order,
+            'stop': self.date_order,
             'allday': True,
+            'partner_id': self.partner_id.id,
         })
         
-        return result
+        return res
