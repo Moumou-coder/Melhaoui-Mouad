@@ -3,6 +3,9 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    training_date = fields.Date(string="Training Date")
+    employee = fields.Many2one("hr.employee", string="employee")
+    #description = fields.Text(string='Description')
     
     def action_confirm(self):
         
@@ -15,7 +18,6 @@ class SaleOrder(models.Model):
             'allday': True,
             'partner_id': self.partner_id.id,
             'employee_id': self.employee_id.id,
-            'description' : self.description,
         })
         
         return res
