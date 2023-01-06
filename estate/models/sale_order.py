@@ -3,6 +3,8 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    training_date = fields.Date(string="Training Date")
+
     
     
     def action_confirm(self):
@@ -18,7 +20,7 @@ class SaleOrder(models.Model):
             'start': self.training_date,
             'stop': self.training_date,
             'allday': True,
-            'partner_id': self.partner_id.id,
+            'partner_id': self.partner_id.id
         })
         
         return res
