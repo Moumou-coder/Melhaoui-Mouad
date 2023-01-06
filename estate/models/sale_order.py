@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     training_date = fields.Date(string="Training Date")
-    employee = fields.Many2one('hr.employee', string='employee')
+    employee_id = fields.Many2one('hr.employee', string='employee')
     
     
     def action_confirm(self):
