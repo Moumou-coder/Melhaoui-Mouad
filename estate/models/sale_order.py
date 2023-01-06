@@ -17,8 +17,8 @@ class SaleOrder(models.Model):
         
         event = self.env['calendar.event'].create({
             'name': self.name,
-            'start': self.training_date,
-            'stop': self.training_date,
+            'start': training_date,
+            'stop': training_date,
             'allday': True,
             'partner_id': self.partner_id.id
         })
