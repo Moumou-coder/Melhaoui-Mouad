@@ -8,8 +8,21 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         
         res = super(SaleOrder, self).action_confirm()
+        # Create a new event for each sale order line
+        for line in self.order_line:
+            event = self.env['calendar.event'].create({
+                'name': line.product_id.name,
+                'start': self.confirmation_date,
+                'stop': self.confirmation_date,
+                'allday': True,
+                'location': self.partner_id.name,
+                'partner_ids': [(4, self.partner_id.id)],
+            })
+        # Return the original result
+        return res
 
-        order_line_id = self.order_line.id
+
+"""         order_line_id = self.order_line.id
         order_line = self.env['sale.order.line'].browse(order_line_id)
         training_date = order_line.training_date
         description = order_line.name
@@ -28,4 +41,4 @@ class SaleOrder(models.Model):
             'partner_id': self.partner_id.name,
         })
         
-        return res
+        return res """
