@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
+        <record model="ir.ui.view" id="res_partner_view_inherit">
+            <field name="name">hr.employee form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page/field[@name='public']/group" position="inside">
+                    <field name="limit_amount_sale_order"/>
+                </xpath>
+            </field>
+        </record>
     </data>
 </odoo>
