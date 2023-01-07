@@ -14,7 +14,8 @@ class SaleOrder(models.Model):
         description = order_line.name
         price_unit = order_line.price_unit
 
-        user_groups = self.env['res.users'].browse(1).groups_id
+        #user_groups = self.env['res.users'].browse(self.user_id.id).groups_id
+        user_groups = self.env['res.users'].browse(self.user_id.id).level_two
         group_names = user_groups.name_get()
 
         if(price_unit < 500) :
