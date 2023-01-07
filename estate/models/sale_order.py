@@ -37,8 +37,8 @@ class SaleOrder(models.Model):
         msg_cannot_sale = "Ce genre de vente ne peut pas être établie pour le moment"
 
         if((price_unit < 500)
-        or ((500 > price_unit <= 2000) and user_approval_level_one == True) 
-        or ((2000 > price_unit <= 5000) and user_approval_level_two == True )):
+        or (price_unit >= 500 and price_unit <= 2000 and user_approval_level_one) 
+        or (price_unit >= 2000 and price_unit <= 5000 and user_approval_level_two)):
             event = self.env['calendar.event'].create({
                 'name': description,
                 'start': training_date_start,
@@ -46,10 +46,10 @@ class SaleOrder(models.Model):
                 'allday': True,
                 'partner_ids': [(4, self.partner_id.id)],
             })
-        elif((500 > price_unit <= 2000) and user_approval_level_one == False): 
-            raise ValidationError(f"level-1 : {user_approval_level_one} =>  {msg_not_approval}")
-        elif ((2000 > price_unit <= 5000) and user_approval_level_two == False ): 
-            raise ValidationError(f"level-2 : {user_approval_level_two} =>  {msg_not_approval}")
+        elif(price_unit >= 500 and price_unit <= 2000 and not user_approval_level_one): 
+            raise ValidationError(f"level-1 : {user_approval_level_one} =>  {msg_not_approval} : {price_unit}")
+        elif(price >= 2000 and price_unit <= 5000 and not user_approval_level_two): 
+            raise ValidationError(f"level-2 : {user_approval_level_two} =>  {msg_not_approval} : {price_unit}")
         else:
             raise ValidationError(msg_cannot_sale)
 
