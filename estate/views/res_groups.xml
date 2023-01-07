@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
+        <record id="view_group_form" model="ir.ui.view">
+            <field name="name">res.groups form</field>
+            <field name="model">res.groups</field>
+            <field name="inherit_id" ref="base.view_groups_form"/>
+            <field name="arch" type="xml">
+                <form position="inside">
+                    <xpath expr="/form/sheet/group/field[@name='share']/.." position="inside">
+                        <field name="share" />
+                        <field name="max_amount" />
+                    </xpath>
+                </form>
+            </field>
+        </record>
     </data>
 </odoo>
