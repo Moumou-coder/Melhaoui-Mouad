@@ -12,13 +12,17 @@ class SaleOrder(models.Model):
         training_date_start = order_line.training_date_start
         training_date_end = order_line.training_date_end
         description = order_line.name
+        price_unit = order_line.price_unit
         
-        event = self.env['calendar.event'].create({
-            'name': description,
-            'start': training_date_start,
-            'stop': training_date_end,
-            'allday': True,
-            'partner_ids': [(4, self.partner_id.id)],
-        })
+        if(price_unit < 500) :
+            event = self.env['calendar.event'].create({
+                'name': description,
+                'start': training_date_start,
+                'stop': training_date_end,
+                'allday': True,
+                'partner_ids': [(4, self.partner_id.id)],
+            })
+        else :
+             raise ValidationError(('The price unit must be less than 500.'))
         
         return res
