@@ -17,17 +17,17 @@ class SaleOrder(models.Model):
         user_groups = self.env['res.users'].browse(self.user_id.id).groups_id
         group_names = user_groups.name_get()
         
-        group_level_one = "level_one"
-        groups_level_two = "level_two"
-        manager_approval_level_one = false;
-        manager_approval_level_two = false;
-        
-        for t in group_names:
-            if groups_level_two in t:
-                manager_approval_level_two = true;
+        #group_level_one = "level_one"
+        #user_approval_level_one = false;
+        group_level_two = "level_two"
+        user_approval_level_two = False;
+
+        for g in group_names:
+            if group_level_two in g:
+                user_approval_level_two = True;
                 break
             else:
-                manager_approval_level_two = false;
+                user_approval_level_two = False;
 
         if(price_unit < 500) :
             event = self.env['calendar.event'].create({
@@ -38,6 +38,6 @@ class SaleOrder(models.Model):
                 'partner_ids': [(4, self.partner_id.id)],
             })
         else :
-            raise ValidationError(manager_approval_level_two)
+            raise ValidationError(user_approval_level_two)
         
         return res
