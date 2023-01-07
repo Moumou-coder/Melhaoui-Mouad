@@ -48,7 +48,7 @@ class SaleOrder(models.Model):
             })
         elif(price_unit >= 500 and price_unit <= 2000 and not user_approval_level_one): 
             raise ValidationError(f"level-1 : {user_approval_level_one} =>  {msg_not_approval} : {price_unit}")
-        elif(price >= 2000 and price_unit <= 5000 and not user_approval_level_two): 
+        elif(price_unit >= 2000 and price_unit <= 5000 and not user_approval_level_two): 
             raise ValidationError(f"level-2 : {user_approval_level_two} =>  {msg_not_approval} : {price_unit}")
         else:
             raise ValidationError(msg_cannot_sale)
