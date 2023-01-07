@@ -36,23 +36,28 @@ class SaleOrder(models.Model):
 
         # Message d'erreur à afficher en cas de non-respect au niveau des conditions ex: ne pas avoir les droits pour la vente         
         msg_not_approval = "Vous n'avez pas les droits d'accès pour confirmer cette vente !"
-        msg_cannot_sale = "Ce genre de vente ne peut pas être établie pour le moment"
+        msg_cannot_sale = "Ce genre de vente ne peut pas être établie pour le moment..."
+        msg_limit_amount =  "Ce partenaire n'est pas autorisé à avoir des ordres de vente dépassant un certain montant."
 
         # Bloc de vérification pour la vente de formation et l'ajout de l'event dans le calendrier
         if((price_unit < 500)
         or (price_unit >= 500 and price_unit <= 2000 and user_approval_level_one) 
         or (price_unit >= 500 and price_unit <= 5000 and user_approval_level_two)):
-            event = self.env['calendar.event'].create({
-                'name': description,
-                'start': training_date_start,
-                'stop': training_date_end,
-                'allday': True,
-                'partner_ids': [(4, self.partner_id.id)],
-            })
+            # Vérifiez si le montant de la commande est supérieur à la limite autorisée pour le partenaire
+            if (self.amount_total > self.partner_id.limit_amount_sale_order):
+                raise ValidationError(msg_limit_amount)
+            else :
+                event = self.env['calendar.event'].create({
+                    'name': description,
+                    'start': training_date_start,
+                    'stop': training_date_end,
+                    'allday': True,
+                    'partner_ids': [(4, self.partner_id.id)],
+                })
         elif(price_unit >= 500 and price_unit <= 2000 and not user_approval_level_one): 
-            raise ValidationError(f"level-1 : {user_approval_level_one} =>  {msg_not_approval} : {price_unit}")
+            raise ValidationError(msg_not_approval)
         elif(price_unit >= 500 and price_unit <= 5000 and not user_approval_level_two): 
-            raise ValidationError(f"level-2 : {user_approval_level_two} =>  {msg_not_approval} : {price_unit}")
+            raise ValidationError(msg_not_approval)
         else:
             raise ValidationError(msg_cannot_sale)
 
