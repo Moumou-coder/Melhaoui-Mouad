@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- <record model="ir.ui.view" id="res_partner_view_inherit">
-            <field name="name">Partner Form (Inherited)</field>
+        <record model="ir.ui.view" id="res_partner_view_inherit">
+            <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//page[@name='Contact Information']" position="inside">
+                <xpath expr="/form/sheet/group/group/field[@name='vat']" position="after">
                     <field name="limit_amount_sale_order" />
                 </xpath>
             </field>
         </record> 
-        * Nous avons pas trouvé la view qu'il faut modifier pour pouvoir utiliser de manière visuelle limit amount sale order * -->
     </data>
 </odoo>
