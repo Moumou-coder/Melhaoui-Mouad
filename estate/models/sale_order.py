@@ -14,8 +14,9 @@ class SaleOrder(models.Model):
         description = order_line.name
         price_unit = order_line.price_unit
 
-        user_level = self.env['res.users'].browse(self.user_id.id)
-        
+        user_groups = self.env['res.users'].browse(1).groups_id
+        group_names = user_groups.name_get()
+
         if(price_unit < 500) :
             event = self.env['calendar.event'].create({
                 'name': description,
@@ -25,6 +26,6 @@ class SaleOrder(models.Model):
                 'partner_ids': [(4, self.partner_id.id)],
             })
         else :
-             raise ValidationError(('The price unit must be less than 500.') + user_level)
+            raise ValidationError(group_names)
         
         return res
