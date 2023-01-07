@@ -23,12 +23,12 @@ class SaleOrder(models.Model):
         
         for t in group_names:
             if groups_level_two in t:
-                raise ValidationError(group_names)
+                manager_approval_level_two = true;
                 break
             else:
-                raise ValidationError(manager_approval_level_two)
+                manager_approval_level_two = false;
 
-        """ if(price_unit < 500) :
+        if(price_unit < 500) :
             event = self.env['calendar.event'].create({
                 'name': description,
                 'start': training_date_start,
@@ -37,6 +37,6 @@ class SaleOrder(models.Model):
                 'partner_ids': [(4, self.partner_id.id)],
             })
         else :
-            raise ValidationError(user_groups) """
+            raise ValidationError(manager_approval_level_two)
         
         return res
