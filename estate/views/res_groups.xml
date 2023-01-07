@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="base.view_groups_form"/>
             <field name="arch" type="xml">
                 <form position="inside">
-                    <xpath expr="/form/sheet/group/field[@name='share']" position="after">
+                    <xpath expr="//group[@name='share']" position="after">
                         <field name="max_amount" />
                     </xpath>
                 </form>
