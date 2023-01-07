@@ -3,7 +3,6 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    approval_count = fields.Integer(string='Approval Count', default=0)
     
     def btn_approval(self):
 
@@ -11,10 +10,12 @@ class SaleOrder(models.Model):
         msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
 
         # Récupérer le manager 
-        #manager = self.env['res.users'].search([], order='approval_count ASC', limit=1)
-        
-        manager_ids = self.env['res.users'].search([('groups_id', 'in', self.env.ref('base.group_manager').id)])
-        manager = manager_ids[0]
+        # manager = self.env['res.users'].search([], order='approval_count ASC', limit=1)
+
+        # manager_ids = self.env['res.users'].search([('groups_id', 'in', self.env.ref('base.group_manager').id)])
+        # manager = manager_ids[0]
+        manager = self.env['res.users'].search([('groups_id', '=', self.env.ref('my_module.manager_group').id)],
+                                           order='approval_count ASC').id
         if not manager:
             raise ValueError(msg_no_manager)
         else :
