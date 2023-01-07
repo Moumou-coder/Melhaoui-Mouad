@@ -6,6 +6,9 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_confirm']" position="after">
+                    <button name="btn_approval" string="Demander l'approbation Manager" type="object" class="oe_highlight"/>
+                </xpath>
                 <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='tax_id']" position="after">
                     <field name="training_date_start"/>
                 </xpath>
