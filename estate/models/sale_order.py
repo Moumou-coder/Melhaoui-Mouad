@@ -13,23 +13,33 @@ class SaleOrder(models.Model):
         training_date_end = order_line.training_date_end
         description = order_line.name
         price_unit = order_line.price_unit
-
+        
+        
+        group_level_one = "level_one"
+        user_approval_level_one = False
+        group_level_two = "level_two"
+        user_approval_level_two = False
+        
         user_groups = self.env['res.users'].browse(self.user_id.id).groups_id
         group_names = user_groups.name_get()
-        
-        #group_level_one = "level_one"
-        #user_approval_level_one = false;
-        group_level_two = "level_two"
-        user_approval_level_two = False;
-
         for g in group_names:
             if group_level_two in g:
                 user_approval_level_two = True;
-                break
+                break;
+            elif group_level_one in g: 
+                user_approval_level_one = True;
+                break;
             else:
                 user_approval_level_two = False;
+                user_approval_level_one = False;
+                
+        msg_error = "Vous n'avez pas les droits d'accès pour confirmer cette vente !"
 
-        if(price_unit < 500) :
+        if((500 > price_unit <= 2000) and user_approval_level_one == False ) : 
+            raise ValidationError(msg_error)
+        elif ((2000 > price_unit <= 5000) and user_approval_level_two == False ) : 
+            raise ValidationError(msg_error)
+        else : 
             event = self.env['calendar.event'].create({
                 'name': description,
                 'start': training_date_start,
@@ -37,7 +47,5 @@ class SaleOrder(models.Model):
                 'allday': True,
                 'partner_ids': [(4, self.partner_id.id)],
             })
-        else :
-            raise ValidationError(user_approval_level_two)
-        
+
         return res
