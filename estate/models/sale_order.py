@@ -33,12 +33,15 @@ class SaleOrder(models.Model):
                 user_approval_level_two = False;
                 user_approval_level_one = False;
                 
-        msg_error = "Vous n'avez pas les droits d'accès pour confirmer cette vente !"
+        msg_not_approval = "Vous n'avez pas les droits d'accès pour confirmer cette vente !"
+        msg_cannot_sale = "Ce genre de vente ne peut pas être établie pour le moment"
 
-        if((500 > price_unit <= 2000) and user_approval_level_one == False ) : 
-            raise ValidationError(msg_error)
-        elif ((2000 > price_unit <= 5000) and user_approval_level_two == False ) : 
-            raise ValidationError(msg_error)
+        if((500 > price_unit <= 2000) and user_approval_level_one == False and user_approval_level_two == False ): 
+            raise ValidationError(msg_not_approval)
+        elif ((2000 > price_unit <= 5000) and user_approval_level_two == False ): 
+            raise ValidationError(msg_not_approval)
+        elif(price_unit > 5000):
+            raise ValidationError(msg_cannot_sale)
         else : 
             event = self.env['calendar.event'].create({
                 'name': description,
