@@ -6,11 +6,12 @@
             <field name="model">res.groups</field>
             <field name="inherit_id" ref="base.view_groups_form"/>
             <field name="arch" type="xml">
-                <form position="inside">
-                    <xpath expr="/form/sheet/group/field[@name='share']/.." position="inside">
-                        <field name="share" />
+                <form string="Groups">
+                  <sheet>
+                    <xpath expr="/form/sheet/group" position="inside">
                         <field name="max_amount" />
                     </xpath>
+                  </sheet>
                 </form>
             </field>
         </record>
