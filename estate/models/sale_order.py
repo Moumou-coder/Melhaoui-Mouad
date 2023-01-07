@@ -7,17 +7,22 @@ class SaleOrder(models.Model):
     
     def btn_approval(self):
 
+        # Messages 
         msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
+
         # Récupérer le manager 
-        manager = self.env['res.users'].search([], order='approval_count ASC', limit=1)
+        #manager = self.env['res.users'].search([], order='approval_count ASC', limit=1)
+        
+        manager_ids = self.env['res.users'].search([('groups_id', 'in', self.env.ref('base.group_manager').id)])
+        manager = manager_ids[0]
         if not manager:
             raise ValueError(msg_no_manager)
-
-        # Créer une activité pour le manager dans le chat
-        self.messagepost(
-            body=_('Demande d\'approbation envoyée à %s') % manager.name,
-            subtype='mail.mt_comment'
-        )
+        else :
+            # Créer une activité pour le manager dans le chat
+            self.messagepost(
+                body=_('Demande d\'approbation envoyée à %s') % manager.name,
+                subtype='mail.mt_comment'
+            )
 
     def action_confirm(self):
         res = super().action_confirm()
@@ -49,7 +54,7 @@ class SaleOrder(models.Model):
                 user_approval_level_two = False;
                 user_approval_level_one = False;
 
-        # Message d'erreur à afficher en cas de non-respect au niveau des conditions ex: ne pas avoir les droits pour la vente         
+        # Messages d'erreur à afficher en cas de non-respect au niveau des conditions ex: ne pas avoir les droits pour la vente         
         msg_not_approval = "Vous n'avez pas les droits d'accès pour confirmer cette vente !"
         msg_cannot_sale = "Ce genre de vente ne peut pas être établie pour le moment..."
         msg_limit_amount =  "Ce partenaire n'est pas autorisé à avoir des ordres de vente dépassant un certain montant."
