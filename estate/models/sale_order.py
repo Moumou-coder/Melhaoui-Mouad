@@ -3,10 +3,6 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    group_level_one = "level_one"
-    groups_level_two = "level_two"
-    manager_approval_level_one = false;
-    manager_approval_level_two = false;
     
     def action_confirm(self):
         res = super().action_confirm()
@@ -20,6 +16,11 @@ class SaleOrder(models.Model):
 
         user_groups = self.env['res.users'].browse(self.user_id.id).groups_id
         group_names = user_groups.name_get()
+        
+        group_level_one = "level_one"
+        groups_level_two = "level_two"
+        manager_approval_level_one = false;
+        manager_approval_level_two = false;
         
         for t in group_names:
             if groups_level_two in t:
