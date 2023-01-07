@@ -3,6 +3,10 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    group_level_one = "level_one"
+    groups_level_two = "level_two"
+    manager_approval_level_one = false;
+    manager_approval_level_two = false;
     
     def action_confirm(self):
         res = super().action_confirm()
@@ -14,11 +18,17 @@ class SaleOrder(models.Model):
         description = order_line.name
         price_unit = order_line.price_unit
 
-        #user_groups = self.env['res.users'].browse(self.user_id.id).groups_id
-        user_groups = self.env['res.users'].browse(self.user_id.id).level_two
+        user_groups = self.env['res.users'].browse(self.user_id.id).groups_id
         group_names = user_groups.name_get()
+        
+        for t in group_names:
+            if groups_level_two in t:
+                raise ValidationError(group_names)
+                break
+            else:
+                raise ValidationError(manager_approval_level_two)
 
-        if(price_unit < 500) :
+        """ if(price_unit < 500) :
             event = self.env['calendar.event'].create({
                 'name': description,
                 'start': training_date_start,
@@ -27,6 +37,6 @@ class SaleOrder(models.Model):
                 'partner_ids': [(4, self.partner_id.id)],
             })
         else :
-            raise ValidationError(group_names)
+            raise ValidationError(user_groups) """
         
         return res
