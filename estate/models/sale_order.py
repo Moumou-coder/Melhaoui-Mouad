@@ -3,6 +3,7 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
+    approval_count = fields.Integer(string='Approval Count', default=0)
     
     def btn_approval(self):
 
