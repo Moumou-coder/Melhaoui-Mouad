@@ -2,7 +2,7 @@ from odoo import api, models, _, fields
 from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
-    _inherit = ['sale.order', 'mail.thread']
+    _inherit = 'sale.order'
     
     def btn_approval(self):
 
@@ -16,9 +16,10 @@ class SaleOrder(models.Model):
             raise ValueError(msg_no_manager)
         else :
             # Créer une activité pour le manager dans le chat
-            self.message_post(body=_('Demande approbation envoyée à %s') % manager.name, subtype='mail.mt_comment')
-
+            mail_thread = self.env['mail.thread']
+            mail_thread.message_post(body=_('Demande d\'approbation envoyée à %s') % manager.name, subtype='mail.mt_comment')
             
+
     def action_confirm(self):
         res = super().action_confirm()
 
