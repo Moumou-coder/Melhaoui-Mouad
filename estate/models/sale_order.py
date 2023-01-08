@@ -7,9 +7,9 @@ class SaleOrder(models.Model):
     def send_message(self):
         chat_channel_model = self.env['mail.channel']
         channels = chat_channel_model.search([])
-    if channels:
-        # Envoi du message au premier canal de chat disponible
-        channels[0].message_post(body="Message envoyé après avoir cliqué sur le bouton action_confirm du sale.order")
+        if channels:
+            # Envoi du message au premier canal de chat disponible
+            channels[0].message_post(body="Message envoyé après avoir cliqué sur le bouton action_confirm du sale.order")
 
     def btn_approval(self):
 
