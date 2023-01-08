@@ -16,10 +16,24 @@ class SaleOrder(models.Model):
         else :
             self.send_message("envoyer un message dans le chat") """
             
-    def btn_approval(self):
+    """ def btn_approval(self):
         records = self.env['mail.thread'].search([])
         for record in records: 
-            records.message_post(body='Mon message') 
+            records.message_post(body='Mon message')  """
+
+    def btn_approval(self):
+        # Messages 
+        msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
+
+        # Récupérer le manager 
+        manager = self.env['res.users'].search([], limit=1)
+    
+        if not manager:
+            raise ValueError(msg_no_manager)
+        else :
+            # Créer une activité pour le manager dans le chat
+            records = self.env['mail.thread'].search([])
+            records.message_post(body=_('Demande d\'approbation envoyée à %s') % manager.name, subtype='mail.mt_comment')
 
 
     def action_confirm(self):
