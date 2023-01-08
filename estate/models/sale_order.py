@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    def request_approval(self):
+    """ def request_approval(self):
         self.ensure_one()
         # Créer une activité pour un manager dans le chatter
         self.env['mail.activity'].create_activity(
@@ -15,7 +15,21 @@ class SaleOrder(models.Model):
             note="Veuillez approuver ou refuser le devis ci-joint.",
             user_id=self.env.user.id,
             planned_date=fields.Datetime.now(),
-        )
+        ) """
+    # Nous avons pas réussi à notifier un gestionnaire cependant nous avons trouvé 2 moyens d'envoyer un message. 
+    # Par contre, une erreur persiste à chque fois lors de l'appuie du bouton 
+    def request_approval(self):
+        # Messages 
+        msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
+
+        # Récupérer le manager 
+        manager = self.env['res.users'].search([], limit=1)
+
+        if not manager:
+            raise ValueError(msg_no_manager)
+        else :
+            # Créer une activité pour le manager dans le chat
+            self.message(body=_('Demande approbation envoyée à %s') % manager.name, subtype='mail.mt_comment')
 
     def action_confirm(self):
         res = super().action_confirm()
