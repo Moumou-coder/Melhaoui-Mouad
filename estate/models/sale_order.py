@@ -16,8 +16,10 @@ class SaleOrder(models.Model):
             user_id=self.env.user.id,
             planned_date=fields.Datetime.now(),
         ) """
+
     # Nous avons pas réussi à notifier un gestionnaire cependant nous avons trouvé 2 moyens d'envoyer un message. 
     # Par contre, une erreur persiste à chque fois lors de l'appuie du bouton 
+    
     def request_approval(self):
         # Messages 
         msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
