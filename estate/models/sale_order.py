@@ -4,6 +4,13 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
+    def send_message(self):
+        chat_channel_model = self.env['mail.channel']
+        channels = chat_channel_model.search([])
+    if channels:
+        # Envoi du message au premier canal de chat disponible
+        channels[0].message_post(body="Message envoyé après avoir cliqué sur le bouton action_confirm du sale.order")
+
     def btn_approval(self):
 
         # Messages 
@@ -15,9 +22,7 @@ class SaleOrder(models.Model):
         if not manager:
             raise ValueError(msg_no_manager)
         else :
-            # Créer une activité pour le manager dans le chat
-            mail_thread = self.env['mail.thread']
-            mail_thread.message_post(body=_('Demande d\'approbation envoyée à %s') % manager.name, subtype='mail.mt_comment')
+            self.send_message()
             
 
     def action_confirm(self):
