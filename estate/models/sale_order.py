@@ -3,16 +3,18 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-    
-    def send_message(self):
-        chat_channel_model = self.env['mail.channel']
-        channels = chat_channel_model.search([])
-        if channels:
-            # Envoi du message au premier canal de chat disponible
-            channels[0].message_post(body="Message envoyé après avoir cliqué sur le bouton action_confirm du sale.order")
 
     def btn_approval(self):
-            self.send_message()
+        # Messages 
+        msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
+
+        # Récupérer le manager 
+        manager = self.env['res.users'].search([], limit=1)
+    
+        if not manager:
+            raise ValueError(msg_no_manager)
+        else :
+            self.send_message("envoyer un message dans le chat")
             
 
     def action_confirm(self):
@@ -55,8 +57,9 @@ class SaleOrder(models.Model):
         or (price_unit >= 500 and price_unit <= 2000 and user_approval_level_one) 
         or (price_unit >= 500 and price_unit <= 5000 and user_approval_level_two)):
             # Vérifiez si le montant de la commande est supérieur à la limite autorisée pour le partenaire (ex:client douteux)
-            if (self.amount_total > self.partner_id.limit_amount_sale_order):
-                raise ValidationError(self.partner_id.limit_amount_sale_order)
+            # On suppose que si limit amount = 0, c'est que limite amount n'a pas été défini
+            if (self.amount_total > self.partner_id.limit_amount_sale_order and self.partner_id.limit_amount_sale_order != 0):
+                raise ValidationError(msg_limit_amount)
             else :
                 event = self.env['calendar.event'].create({
                     'name': description,
