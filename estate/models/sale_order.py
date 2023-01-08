@@ -10,20 +10,24 @@ class SaleOrder(models.Model):
         msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
 
         # Récupérer le manager 
-        # manager = self.env['res.users'].search([], order='approval_count ASC', limit=1)
+        manager = self.env['res.users'].search([], limit=1)
 
         # manager_ids = self.env['res.users'].search([('groups_id', 'in', self.env.ref('base.group_manager').id)])
         # manager = manager_ids[0]
-        manager = self.env['res.users'].search([('groups_id', '=', self.env.ref('my_module.manager_group').id)],
-                                           order='approval_count ASC').id
-        if not manager:
+        # manager = self.env['res.users'].search([('groups_id', '=', self.env.ref('my_module.manager_group').id)],
+        #    
+        #                                 order='approval_count ASC').id
+
+        raise ValidationError(manager)
+        
+        """ if not manager:
             raise ValueError(msg_no_manager)
         else :
             # Créer une activité pour le manager dans le chat
             self.messagepost(
                 body=_('Demande d\'approbation envoyée à %s') % manager.name,
                 subtype='mail.mt_comment'
-            )
+            ) """
 
     def action_confirm(self):
         res = super().action_confirm()
