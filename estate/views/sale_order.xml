@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_confirm']" position="before">
-                    <button name="btn_approval" string="Demander l'approbation Manager" type="object"/>
+                    <button name="request_approval" string="Demander l'approbation Manager" type="object"/>
                 </xpath>
                 <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='tax_id']" position="after">
                     <field name="training_date_start"/>

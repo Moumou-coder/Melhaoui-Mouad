@@ -4,37 +4,18 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    """ def btn_approval(self):
-        # Messages 
-        msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
-
-        # Récupérer le manager 
-        manager = self.env['res.users'].search([], limit=1)
-    
-        if not manager:
-            raise ValueError(msg_no_manager)
-        else :
-            self.send_message("envoyer un message dans le chat") """
-            
-    """ def btn_approval(self):
-        records = self.env['mail.thread'].search([])
-        for record in records: 
-            records.message_post(body='Mon message')  """
-
-    def btn_approval(self):
-        # Messages 
-        msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
-
-        # Récupérer le manager 
-        manager = self.env['res.users'].search([], limit=1)
-    
-        if not manager:
-            raise ValueError(msg_no_manager)
-        else :
-            # Créer une activité pour le manager dans le chat
-            records = self.env['mail.thread'].search([])
-            records.message_post(body=_('Demande d\'approbation envoyée à %s') % manager.name, subtype='mail.mt_comment')
-
+    def request_approval(self):
+        self.ensure_one()
+        # Créer une activité pour un manager dans le chatter
+        self.env['mail.activity'].create_activity(
+            res_id=self.id,
+            res_model=self._name,
+            activity_type_id=self.env.ref('mail.mail_activity_data_todo').id,
+            summary="Demande d'approbation de devis",
+            note="Veuillez approuver ou refuser le devis ci-joint.",
+            user_id=self.env.user.id,
+            planned_date=fields.Datetime.now(),
+        )
 
     def action_confirm(self):
         res = super().action_confirm()
