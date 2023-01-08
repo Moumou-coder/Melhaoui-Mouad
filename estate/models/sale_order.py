@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    def btn_approval(self):
+    """ def btn_approval(self):
         # Messages 
         msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
 
@@ -14,8 +14,13 @@ class SaleOrder(models.Model):
         if not manager:
             raise ValueError(msg_no_manager)
         else :
-            self.send_message("envoyer un message dans le chat")
+            self.send_message("envoyer un message dans le chat") """
             
+    def btn_approval(self):
+        records = self.env['mail.thread'].search([])
+        for record in records: 
+            records.message_post(body='Mon message') 
+
 
     def action_confirm(self):
         res = super().action_confirm()
