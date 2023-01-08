@@ -66,7 +66,7 @@ class SaleOrder(models.Model):
         or (price_unit >= 500 and price_unit <= 5000 and user_approval_level_two)):
             # Vérifiez si le montant de la commande est supérieur à la limite autorisée pour le partenaire (ex:client douteux)
             if (self.amount_total > self.partner_id.limit_amount_sale_order):
-                raise ValidationError(msg_limit_amount)
+                raise ValidationError(self.partner_id.limit_amount_sale_order)
             else :
                 event = self.env['calendar.event'].create({
                     'name': description,
