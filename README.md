@@ -5,7 +5,7 @@ The Technical Training of Odoo 16.0 is available on the
 
 Enoncé :
 
-- Exercice 1 : fait entièrement
-- Exercice 2 : fait entièrement
-- Exercice 3 : fait entièrement
-- Exercice 4 : fait à moitité car message d'erreur lorsqu'on appuie sur le bouton demande d'approbation
+- Exercice 1 : Done
+- Exercice 2 : Done
+- Exercice 3 : Done
+- Exercice 4 : Done

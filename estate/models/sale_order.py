@@ -3,35 +3,25 @@ from odoo.exceptions import ValidationError
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-
-    """ def request_approval(self):
-        self.ensure_one()
-        # Créer une activité pour un manager dans le chatter
-        self.env['mail.activity'].create_activity(
-            res_id=self.id,
-            res_model=self._name,
-            activity_type_id=self.env.ref('mail.mail_activity_data_todo').id,
-            summary="Demande d'approbation de devis",
-            note="Veuillez approuver ou refuser le devis ci-joint.",
-            user_id=self.env.user.id,
-            planned_date=fields.Datetime.now(),
-        ) """
-
-    # Nous avons pas réussi à notifier un gestionnaire cependant nous avons trouvé 2 moyens d'envoyer un message. 
-    # Par contre, une erreur persiste à chque fois lors de l'appuie du bouton 
     
     def request_approval(self):
-        # Messages 
-        msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
+        # Récupérer le manager  
+        manager = self.env['res.users'].search_read([], limit=1)
 
-        # Récupérer le manager 
-        manager = self.env['res.users'].search([], limit=1)
+        # Message en cas d'erreur
+        msg_no_manager = "Aucun manager disponible actuellement pour l'approbation..."
 
         if not manager:
             raise ValueError(msg_no_manager)
-        else :
-            # Créer une activité pour le manager dans le chat
-            self.message(body=_('Demande approbation envoyée à %s') % manager.name, subtype='mail.mt_comment')
+        else:
+            # Créer un message pour le manager
+            self.env['mail.message'].create({
+                'subject': 'Demande approbation de vente',
+                'body': 'Veuillez approuver la vente sélectionnée',
+                'model': 'sale.order',
+                'res_id': self.id,
+                'partner_ids': [(4, manager[0]['id'])]
+            })
 
     def action_confirm(self):
         res = super().action_confirm()
@@ -72,7 +62,7 @@ class SaleOrder(models.Model):
         if((price_unit < 500)
         or (price_unit >= 500 and price_unit <= 2000 and user_approval_level_one) 
         or (price_unit >= 500 and price_unit <= 5000 and user_approval_level_two)):
-            # Vérifiez si le montant de la commande est supérieur à la limite autorisée pour le partenaire (ex:client douteux)
+            # Vérifier si le montant de la commande est supérieur à la limite autorisée pour le partenaire (ex:client douteux)
             # On suppose que si limit amount = 0, c'est que limite amount n'a pas été défini
             if (self.amount_total > self.partner_id.limit_amount_sale_order and self.partner_id.limit_amount_sale_order != 0):
                 raise ValidationError(msg_limit_amount)
