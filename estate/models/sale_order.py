@@ -12,16 +12,6 @@ class SaleOrder(models.Model):
             channels[0].message_post(body="Message envoyé après avoir cliqué sur le bouton action_confirm du sale.order")
 
     def btn_approval(self):
-
-        # Messages 
-        msg_no_manager : "Aucun manager disponible actuellement pour l'approbation..."
-
-        # Récupérer le manager 
-        manager = self.env['res.users'].search([], limit=1)
-    
-        if not manager:
-            raise ValueError(msg_no_manager)
-        else :
             self.send_message()
             
 
